@@ -9,21 +9,118 @@
         }
 
         .bg {
-            /* Substitua 'caminho/para/sua/imagem.jpg' pelo caminho do diretório da sua imagem */
             background-image: url('Codigos_Template.PNG');
-
             height: 100%;
-
-            /* Centraliza e dimensiona a imagem de maneira agradável */
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
+            opacity: 1;
+            transition: opacity 2s;
+        }
+
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: space-around;
+            width: 120px;
+        }
+
+        .syncLoader {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            color: #ff0000;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ff0000;
+            animation: bounce 1s infinite;
+            margin-left: 10px;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .line {
+            width: 0%;
+            height: 2px;
+            background-color: #ff0000;
+            animation: load 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes load {
+            0% {
+                width: 0%;
+            }
+            50% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="bg"></div>
+<div class="bg" id="bg"></div>
+<div class="loader" id="loader">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+</div>
+<div class="syncLoader" id="syncLoader">
+    Sincronizando dados
+    <div class="line"></div>
+</div>
+
+<script>
+    function showLoader(id) {
+        document.getElementById(id).style.display = 'flex';
+        document.getElementById('bg').style.opacity = '0';
+    }
+
+    function hideLoader(id) {
+        document.getElementById(id).style.display = 'none';
+        document.getElementById('bg').style.opacity = '1';
+    }
+
+    showLoader('loader');
+    setTimeout(() => {
+        hideLoader('loader');
+        showLoader('syncLoader');
+        setTimeout(() => hideLoader('syncLoader'), 5000);
+    }, 5000);
+
+    setInterval(function() {
+        showLoader('syncLoader');
+        setTimeout(() => hideLoader('syncLoader'), 5000);
+    }, 300000);
+</script>
 
 </body>
 </html>
